@@ -23,6 +23,28 @@ context: |
   - Strong parameters, escopo de queries em models, controllers magros
   - I18n: chaves em pt-BR; textos voltados ao usuário em config/locales/pt-BR.yml
 
+  Nomenclatura de código (pt-BR):
+  - Models, controllers, services, jobs, helpers, concerns, mailers e nomes de
+    métodos/variáveis SEMPRE em Português do Brasil quando o termo for de
+    domínio (ex.: `Organizador`, `Campanha`, `Pergunta`, `Participacao`,
+    `OpcaoResposta`, `CamposPersonalizadosController`, `CalcularPontuacao`).
+  - Tabelas, colunas e nomes de arquivo seguem a inflexão pt-BR
+    (`organizadores`, `participacoes`, `opcoes_resposta`) — registrada em
+    `config/initializers/inflections.rb`. Adicionar novos termos
+    irregulares lá quando aparecerem.
+  - SEM acentos, til ou cedilha em nomes de classe, arquivo, tabela ou coluna
+    (`participacao`, não `participação`; `opcao_resposta`, não `opção_resposta`).
+    Acentuação fica restrita a strings/views/locales.
+  - Mantidas em inglês: APIs e palavras-chave do framework Rails
+    (`ApplicationController`, `ApplicationRecord`, `ApplicationJob`,
+    `ApplicationMailer`, ações REST `index/show/new/create/edit/update/destroy`,
+    macros como `has_many`, `belongs_to`, `before_action`, `validates`),
+    e o nome do app `Quiz` (já é o nome do projeto/módulo raiz).
+  - Rotas voltadas ao usuário também em pt-BR sempre que possível
+    (`/organizadores`, `/campanhas`, `/perguntas`, `/c/:slug`).
+  - Não renomear código pré-existente só pela convenção; aplicar a partir de
+    código novo gerado por propostas futuras.
+
 # Regras por artefato
 rules:
   proposal:

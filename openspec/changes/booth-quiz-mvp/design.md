@@ -61,24 +61,31 @@ Restrição transversal mais importante: a tela pública do participante precisa
 
 ```
 Quiz
- ├── identifier_fields_config (JSON ou colunas dedicadas)
- │     - name_required: true (sempre, não editável)
+ ├── colunas dedicadas para identificadores
+ │     - nome_obrigatorio: true (sempre, não editável)
  │     - email_state: enum [not_asked, optional, required]
  │     - phone_state: enum [not_asked, optional, required]
  │
- └── custom_fields (has_many ParticipantCustomField)
-       - label: "Empresa"
-       - field_type: enum [text, email, phone, select]
-       - required: boolean
-       - options: JSON (para select)
-       - position: integer
+ └── campos_personalizados (has_many CampoPersonalizado)
+       - rotulo: "Empresa"
+       - tipo_campo: enum [text, email, phone, select]
+       - obrigatorio: boolean
+       - opcoes: JSON (para select)
+       - posicao: integer
 
-Participant (efêmero, vinculado a Campaign)
- ├── name (string, sempre presente)
+Participacao (efêmera, vinculada a Campanha)
+ ├── nome (string, sempre presente)
  ├── email (string, nullable)
- ├── phone (string, nullable)
- └── custom_field_values (has_many; field_id + value)
+ ├── telefone (string, nullable)
+ └── valores_campo_personalizado (has_many; campo_personalizado_id + valor)
 ```
+
+Convenção de nomes seguida em todo o módulo: pt-BR sem acentos
+(`Organizador`, `Campanha`, `Pergunta`, `OpcaoResposta`, `Participacao`,
+`CampoPersonalizado`, `ValorCampoPersonalizado`), conforme regra normativa
+em `openspec/specs/project-stack/spec.md` e inflexões em
+`config/initializers/inflections.rb`. `Quiz` permanece em inglês por ser o
+nome do app/módulo raiz do projeto.
 
 **Rationale:** Os três campos especiais (nome, email, telefone) ficam como **colunas dedicadas** em `participants` porque o sistema precisa raciocinar sobre eles (regra de bloqueio anti-duplicata por email/telefone). Os campos extras vão por uma estrutura relacional simples (não EAV completo) para suportar a flexibilidade prometida sem complicar queries.
 

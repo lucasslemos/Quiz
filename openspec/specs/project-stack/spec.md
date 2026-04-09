@@ -74,3 +74,26 @@ O sistema SHALL ter `:"pt-BR"` como `default_locale` do I18n e textos voltados a
 #### Scenario: Texto hardcoded em view
 - **WHEN** uma view contém string voltada ao usuário diretamente em ERB
 - **THEN** a string DEVE ser movida para `config/locales/pt-BR.yml` e referenciada via `t("...")`
+
+### Requirement: Nomenclatura de código em pt-BR
+Models, controllers, services, jobs, helpers, concerns, mailers, métodos e variáveis de domínio SHALL usar nomes em Português do Brasil, e o projeto SHALL manter um inflector pt-BR registrado em `config/initializers/inflections.rb` para que Zeitwerk e Active Record resolvam corretamente as pluralizações sem necessidade de declarar `self.table_name` em cada classe. Nomes SHALL ser escritos sem acentos, til ou cedilha (apenas em strings/views/locales). Palavras-chave e APIs do Rails (`ApplicationController`, `ApplicationRecord`, ações REST padrão `index/show/new/create/edit/update/destroy`, macros como `has_many`, `belongs_to`, `before_action`, `validates`) e o nome do app `Quiz` SHALL permanecer em inglês.
+
+#### Scenario: Novo model de domínio
+- **WHEN** uma proposta cria um novo model de domínio (ex.: organizador, campanha, pergunta)
+- **THEN** o nome da classe DEVE ser em pt-BR sem acentos (ex.: `Organizador`, `Campanha`, `Pergunta`, `Participacao`, `OpcaoResposta`) e a tabela DEVE ser a forma plural pt-BR correspondente (`organizadores`, `campanhas`, `perguntas`, `participacoes`, `opcoes_resposta`)
+
+#### Scenario: Pluralização irregular ainda não registrada
+- **WHEN** um novo termo de domínio é introduzido e a regra geral do inflector não pluraliza corretamente
+- **THEN** uma `inflect.irregular(...)` DEVE ser adicionada ao `config/initializers/inflections.rb` antes de gerar o model
+
+#### Scenario: Nome com acento ou cedilha
+- **WHEN** uma proposta sugere uma classe, arquivo, tabela ou coluna com acentuação ou cedilha (ex.: `Participação`, `opção_resposta`)
+- **THEN** o nome DEVE ser reescrito sem acento (ex.: `Participacao`, `opcao_resposta`); a acentuação fica apenas em strings de UI/locales
+
+#### Scenario: Tentativa de traduzir API do framework
+- **WHEN** uma proposta sugere renomear `ApplicationController`, `ApplicationRecord`, `ApplicationJob`, `ApplicationMailer` ou ações REST padrão
+- **THEN** a sugestão DEVE ser rejeitada — convenções do Rails permanecem em inglês
+
+#### Scenario: Código pré-existente em inglês
+- **WHEN** uma proposta encontra código pré-existente com nomes em inglês
+- **THEN** ela NÃO DEVE renomear apenas pela convenção; renomeações em massa exigem proposta dedicada
