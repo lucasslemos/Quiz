@@ -1,0 +1,17 @@
+<% content_for :title, "Recuperar senha — Quiz" %>
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <h1 class="h3 mb-4">Recuperar senha</h1>
+
+    <%= form_with url: senhas_path, method: :post, local: true do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, "Email", class: "form-label" %>
+        <%= f.email_field :email, class: "form-control", required: true, autofocus: true %>
+      </div>
+
+      <%= f.submit "Enviar instruções", class: "btn btn-primary" %>
+      <%= link_to "Voltar", entrar_path, class: "btn btn-link" %>
+    <% end %>
+  </div>
+</div>

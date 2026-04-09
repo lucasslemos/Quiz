@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <title><%= content_for(:title) || "Quiz" %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%# Layout minimalista para o participante. Carrega o mesmo bundle do
+        Bootstrap (já cacheado pelo Propshaft) mas evita qualquer JS/asset
+        decorativo. Sem fontes externas, sem imagens. %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  </head>
+
+  <body>
+    <main class="container py-4" style="max-width: 32rem;">
+      <% flash.each do |type, message| %>
+        <div class="alert alert-<%= type == "notice" ? "info" : "warning" %>"><%= message %></div>
+      <% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

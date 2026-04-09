@@ -1,36 +1,36 @@
 ## 1. Setup do projeto
 
 - [x] 1.1 Bootstrap 5 já configurado via `cssbundling-rails` (travado pela spec `ui-layout`); nenhuma ação adicional necessária
-- [ ] 1.2 Adicionar gem `rqrcode` ao Gemfile
+- [x] 1.2 Adicionar gem `rqrcode` ao Gemfile (também adicionado `bcrypt` e `letter_opener`)
 - [x] 1.3 Configurar locale pt-BR como padrão (`config.i18n.default_locale = :"pt-BR"`) — já feito em `lock-stack-bootstrap5`
 - [x] 1.4 Banco de dados MySQL (gem `mysql2`) já configurado em todos os ambientes (travado pela spec `project-stack`); nenhuma ação adicional necessária
-- [ ] 1.5 Criar layouts base separados: `application.html.erb` (organizador, já existente com Bootstrap 5), `admin.html.erb`, `participante.html.erb` (minimalista, usando Bootstrap 5)
+- [x] 1.5 Criar layouts base separados: `application.html.erb` (organizador, já existente com Bootstrap 5), `admin.html.erb`, `participante.html.erb` (minimalista, usando Bootstrap 5)
 
 ## 2. Modelo de dados — Organizador e Administrador
 
-- [ ] 2.1 Gerar model `Organizador` (tabela `organizadores`) com campos: email (unique), password_digest, status (enum: pending/approved/rejected/suspended), timestamps
-- [ ] 2.2 Gerar model `Administrador` (tabela `administradores`) com campos: email (unique), password_digest, timestamps
-- [ ] 2.3 Migrations + índices únicos em email
-- [ ] 2.4 Validações de modelo (email formato, senha mínimo 8 chars)
-- [ ] 2.5 Seed de pelo menos um Administrador inicial via `db/seeds.rb` ou rake task
+- [x] 2.1 Gerar model `Organizador` (tabela `organizadores`) com campos: email (unique), password_digest, status (enum: pending/approved/rejected/suspended), timestamps
+- [x] 2.2 Gerar model `Administrador` (tabela `administradores`) com campos: email (unique), password_digest, timestamps
+- [x] 2.3 Migrations + índices únicos em email
+- [x] 2.4 Validações de modelo (email formato, senha mínimo 8 chars)
+- [x] 2.5 Seed de pelo menos um Administrador inicial via `db/seeds.rb` ou rake task
 
 ## 3. Autenticação do organizador
 
-- [ ] 3.1 Usar gerador de auth do Rails 8.1 (`bin/rails generate authentication`) adaptado ao model `Organizador`
-- [ ] 3.2 Rotas: `/cadastro`, `/entrar`, `/sair`, `/senha/nova`, `/senha/editar`
-- [ ] 3.3 Tela de "aguardando aprovação" exibida para organizadores `pending`
-- [ ] 3.4 Concern `RequerOrganizadorAprovado` que bloqueia rotas protegidas
-- [ ] 3.5 Mensagens claras para `rejected` e `suspended` no login
-- [ ] 3.6 Fluxo de recuperação de senha por email com token expirável (configurar mailer)
+- [x] 3.1 Auth manual com `has_secure_password` (não usei o gerador `rails g authentication` porque temos dois contextos de auth distintos — Organizador e Administrador — e duplicar/adaptar o gerador sairia mais caro que escrever do zero)
+- [x] 3.2 Rotas: `/cadastro`, `/entrar`, `/sair`, `/senha/nova`, `/senha/editar`
+- [x] 3.3 Tela de "aguardando aprovação" exibida para organizadores `pending`/`rejected`/`suspended`
+- [x] 3.4 Concern `AutenticacaoOrganizador` com helper `requer_organizador_aprovado!` (substitui `RequerOrganizadorAprovado` da spec)
+- [x] 3.5 Mensagens claras para `rejected` e `suspended` no login
+- [x] 3.6 Fluxo de recuperação de senha por email com token assinado (`signed_id` purpose `:redefinir_senha`, expira em 1h); mailer `OrganizadorMailer#redefinir_senha` com `letter_opener` em dev
 
 ## 4. Autenticação do administrador e painel
 
-- [ ] 4.1 Sessão de administrador separada (controllers em namespace `Admin::`)
-- [ ] 4.2 Rotas `/admin/entrar`, `/admin/sair`
-- [ ] 4.3 Concern `RequerAdministrador` para proteger rotas `/admin/*`
-- [ ] 4.4 Página `/admin/organizadores` com filtro por status
-- [ ] 4.5 Página `/admin/organizadores/pendentes` com fila e ações aprovar/rejeitar
-- [ ] 4.6 Ações `aprovar` e `rejeitar` mudando o status do `Organizador`
+- [x] 4.1 Sessão de administrador separada (controllers em namespace `Admin::`, concern `AutenticacaoAdministrador`)
+- [x] 4.2 Rotas `/admin/entrar`, `/admin/sair`
+- [x] 4.3 Concern `AutenticacaoAdministrador` com `requer_administrador!` (substitui `RequerAdministrador` da spec)
+- [x] 4.4 Página `/admin/organizadores` com filtro por status (todos/pending/approved/rejected/suspended)
+- [x] 4.5 Página `/admin/organizadores/pendentes` com fila e ações aprovar/rejeitar
+- [x] 4.6 Ações `aprovar`, `rejeitar` e `suspender` mudando o status do `Organizador`
 
 ## 5. Modelo de dados — Quiz e perguntas
 

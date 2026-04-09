@@ -1,14 +1,57 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # ----------------------------------------------------------------------------
+  # Saúde
+  # ----------------------------------------------------------------------------
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # ----------------------------------------------------------------------------
+  # Autenticação do organizador
+  # ----------------------------------------------------------------------------
+  get  "/cadastro", to: "cadastros#new",     as: :cadastro
+  post "/cadastro", to: "cadastros#create"
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  get    "/entrar", to: "sessoes#new",     as: :entrar
+  post   "/entrar", to: "sessoes#create"
+  delete "/sair",   to: "sessoes#destroy", as: :sair
+
+  get   "/senha/nova",    to: "senhas#new",    as: :nova_senha
+  post  "/senha",         to: "senhas#create", as: :senhas
+  get   "/senha/editar",  to: "senhas#edit",   as: :editar_senha
+  patch "/senha",         to: "senhas#update"
+
+  get "/aguardando-aprovacao", to: "aprovacoes#show", as: :aguardando_aprovacao
+
+  # ----------------------------------------------------------------------------
+  # Área do organizador (logado e aprovado)
+  # ----------------------------------------------------------------------------
+  namespace :organizador do
+    get "/", to: "painel#show", as: :root
+  end
+
+  # ----------------------------------------------------------------------------
+  # Painel do administrador
+  # ----------------------------------------------------------------------------
+  namespace :admin do
+    get    "/entrar", to: "sessoes#new",     as: :entrar
+    post   "/entrar", to: "sessoes#create"
+    delete "/sair",   to: "sessoes#destroy", as: :sair
+
+    get "/", to: redirect("/admin/organizadores")
+
+    resources :organizadores, only: %i[index] do
+      collection do
+        get :pendentes
+      end
+      member do
+        post :aprovar
+        post :rejeitar
+        post :suspender
+      end
+    end
+  end
+
+  # ----------------------------------------------------------------------------
+  # Raiz da aplicação
+  # ----------------------------------------------------------------------------
+  root to: "sessoes#new"
 end

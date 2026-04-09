@@ -1,0 +1,48 @@
+<% content_for :title, "Organizadores — Admin" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Organizadores</h1>
+  <%= link_to "Pendentes", pendentes_admin_organizadores_path, class: "btn btn-warning btn-sm" %>
+</div>
+
+<ul class="nav nav-pills mb-3">
+  <% [["all", "Todos"], ["pending", "Pendentes"], ["approved", "Aprovados"], ["rejected", "Rejeitados"], ["suspended", "Suspensos"]].each do |key, label| %>
+    <li class="nav-item">
+      <%= link_to label, admin_organizadores_path(status: key), class: "nav-link #{"active" if @status == key}" %>
+    </li>
+  <% end %>
+</ul>
+
+<% if @organizadores.any? %>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Cadastrado em</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @organizadores.each do |organizador| %>
+          <tr>
+            <td><%= organizador.email %></td>
+            <td><span class="badge text-bg-secondary"><%= organizador.status %></span></td>
+            <td><%= l(organizador.created_at, format: :short) %></td>
+            <td class="text-nowrap">
+              <% if organizador.pendente? %>
+                <%= button_to "Aprovar", aprovar_admin_organizador_path(organizador), method: :post, class: "btn btn-sm btn-success" %>
+                <%= button_to "Rejeitar", rejeitar_admin_organizador_path(organizador), method: :post, class: "btn btn-sm btn-outline-danger" %>
+              <% elsif organizador.aprovado? %>
+                <%= button_to "Suspender", suspender_admin_organizador_path(organizador), method: :post, class: "btn btn-sm btn-outline-warning" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="alert alert-info mb-0">Nenhum organizador encontrado.</div>
+<% end %>

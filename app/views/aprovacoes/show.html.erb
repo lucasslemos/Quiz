@@ -1,0 +1,24 @@
+<% content_for :title, "Aguardando aprovação — Quiz" %>
+
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6 text-center">
+    <h1 class="h3 mb-3">Cadastro recebido!</h1>
+
+    <% if current_organizador.rejeitado? %>
+      <div class="alert alert-danger">
+        Seu cadastro foi <strong>rejeitado</strong>. Entre em contato com o administrador para mais informações.
+      </div>
+    <% elsif current_organizador.suspenso? %>
+      <div class="alert alert-warning">
+        Sua conta está <strong>suspensa</strong>. Entre em contato com o administrador.
+      </div>
+    <% else %>
+      <p class="text-muted">
+        Sua conta está aguardando aprovação do administrador.
+        Você receberá acesso assim que for aprovado.
+      </p>
+    <% end %>
+
+    <%= button_to "Sair", sair_path, method: :delete, class: "btn btn-outline-secondary mt-3" %>
+  </div>
+</div>

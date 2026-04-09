@@ -1,0 +1,21 @@
+<% content_for :title, "Admin · Entrar — Quiz" %>
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <h1 class="h3 mb-4">Entrar como administrador</h1>
+
+    <%= form_with url: admin_entrar_path, method: :post, local: true do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, "Email", class: "form-label" %>
+        <%= f.email_field :email, class: "form-control", required: true, autofocus: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, "Senha", class: "form-label" %>
+        <%= f.password_field :password, class: "form-control", required: true %>
+      </div>
+
+      <%= f.submit "Entrar", class: "btn btn-dark" %>
+    <% end %>
+  </div>
+</div>

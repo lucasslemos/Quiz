@@ -1,0 +1,43 @@
+<% content_for :title, "Cadastro — Quiz" %>
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <h1 class="h3 mb-4">Criar conta de organizador</h1>
+
+    <%= form_with model: @organizador, url: cadastro_path, scope: :organizador, local: true do |f| %>
+      <% if @organizador.errors.any? %>
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            <% @organizador.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-3">
+        <%= f.label :email, "Email", class: "form-label" %>
+        <%= f.email_field :email, class: "form-control", required: true, autofocus: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, "Senha", class: "form-label" %>
+        <%= f.password_field :password, class: "form-control", required: true, minlength: 8 %>
+        <div class="form-text">Mínimo 8 caracteres.</div>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password_confirmation, "Confirmar senha", class: "form-label" %>
+        <%= f.password_field :password_confirmation, class: "form-control", required: true %>
+      </div>
+
+      <%= f.submit "Cadastrar", class: "btn btn-primary" %>
+    <% end %>
+
+    <hr class="my-4">
+
+    <p class="text-center">
+      Já tem conta? <%= link_to "Entrar", entrar_path %>.
+    </p>
+  </div>
+</div>

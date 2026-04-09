@@ -1,0 +1,32 @@
+<% content_for :title, "Nova senha — Quiz" %>
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <h1 class="h3 mb-4">Defina sua nova senha</h1>
+
+    <%= form_with url: senhas_path, method: :patch, scope: :organizador, local: true do |f| %>
+      <%= hidden_field_tag :token, params[:token] %>
+      <% if @organizador.errors.any? %>
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            <% @organizador.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-3">
+        <%= f.label :password, "Nova senha", class: "form-label" %>
+        <%= f.password_field :password, class: "form-control", required: true, minlength: 8, autofocus: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password_confirmation, "Confirmar nova senha", class: "form-label" %>
+        <%= f.password_field :password_confirmation, class: "form-control", required: true %>
+      </div>
+
+      <%= f.submit "Salvar", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <title><%= content_for(:title) || "Admin · Quiz" %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="bg-body-tertiary">
+    <nav class="navbar navbar-dark bg-dark border-bottom">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/admin">Quiz · Admin</a>
+        <% if defined?(current_administrador) && current_administrador %>
+          <%= button_to "Sair", admin_sair_path, method: :delete, class: "btn btn-sm btn-outline-light" %>
+        <% end %>
+      </div>
+    </nav>
+
+    <main class="container py-4">
+      <% flash.each do |type, message| %>
+        <div class="alert alert-<%= type == "notice" ? "info" : "danger" %>"><%= message %></div>
+      <% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

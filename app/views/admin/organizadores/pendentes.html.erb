@@ -1,0 +1,34 @@
+<% content_for :title, "Pendentes — Admin" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Organizadores pendentes</h1>
+  <%= link_to "Todos", admin_organizadores_path, class: "btn btn-outline-secondary btn-sm" %>
+</div>
+
+<% if @organizadores.any? %>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Cadastrado em</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @organizadores.each do |organizador| %>
+          <tr>
+            <td><%= organizador.email %></td>
+            <td><%= l(organizador.created_at, format: :short) %></td>
+            <td class="text-nowrap">
+              <%= button_to "Aprovar", aprovar_admin_organizador_path(organizador), method: :post, class: "btn btn-sm btn-success" %>
+              <%= button_to "Rejeitar", rejeitar_admin_organizador_path(organizador), method: :post, class: "btn btn-sm btn-outline-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="alert alert-success mb-0">Nenhum organizador pendente.</div>
+<% end %>
