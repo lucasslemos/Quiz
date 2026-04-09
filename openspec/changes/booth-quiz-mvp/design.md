@@ -26,9 +26,9 @@ Restrição transversal mais importante: a tela pública do participante precisa
 ## Decisions
 
 ### Decisão 1 — Stack e padrão arquitetural
-**Escolha:** Rails 8.1 monolito clássico, Hotwire (Turbo + Stimulus mínimo), Tailwind CSS, SQLite em dev e Postgres em prod (ou SQLite-em-prod se simplificar; decisão pendente, ver Open Questions). Solid Queue / Solid Cache nativos do Rails 8.1.
+**Escolha:** Rails 8.1 monolito clássico, Hotwire (Turbo + Stimulus mínimo), **Bootstrap 5** (via `cssbundling-rails`, conforme spec `ui-layout`), **MySQL** em todos os ambientes (gem `mysql2`, conforme spec `project-stack`). Solid Queue / Solid Cache / Solid Cable nativos do Rails 8.1.
 
-**Rationale:** Rails 8.1 já entrega gerador de auth, Solid Queue, Solid Cable nativos sem gems extras. Hotwire mantém JS mínimo, o que casa diretamente com o requisito de "tela leve para 4G ruim" do participante. Tailwind é leve quando purgado em produção.
+**Rationale:** Rails 8.1 já entrega gerador de auth, Solid Queue, Solid Cable nativos sem gems extras. Hotwire mantém JS mínimo, o que casa diretamente com o requisito de "tela leve para 4G ruim" do participante. Bootstrap 5 é a stack travada do projeto (`rails new ... -c bootstrap`), oferece componentes prontos (navbar, cards, forms, modais) e CSS purgável em build. MySQL é o adapter travado do projeto (`rails new ... --database=mysql`).
 
 **Alternativas consideradas:** SPA React/Vue (descartado: peso de JS, viola requisito de tela leve); Sinatra/Hanami (descartado: time-to-market pior, sem auth pronto).
 
@@ -117,7 +117,7 @@ Se qualquer um bater → bloqueia com mensagem amigável "você já participou d
 **Escolha:**
 - Layout dedicado (`participant.html.erb`), separado do layout do organizador
 - Sem Stimulus controllers (ou só um único controller minúsculo se realmente necessário)
-- Tailwind purgado agressivamente, ou CSS inline crítico
+- Bootstrap 5 carregado normalmente (já travado pela spec `ui-layout`); preferir utilitários (`btn`, `form-control`, grid) a CSS custom; sem ícones, sem componentes JS pesados
 - Sem imagens decorativas, sem fontes web (system font stack)
 - Server-rendered tudo; Turbo apenas para o submit final (evita full page reload)
 - HTML semântico, sem componentes pesados
@@ -142,7 +142,6 @@ Se qualquer um bater → bloqueia com mensagem amigável "você já participou d
 
 ## Open Questions
 
-- **Postgres ou SQLite em produção?** SQLite simplifica deploy (Rails 8.1 incentiva), mas Postgres é mais conservador para multi-tenant. Decisão pode ficar pra fase de implementação inicial.
 - **Hospedagem alvo?** Não bloqueia o MVP, mas influencia como configurar Active Storage, secrets, etc. Pode ser definido depois.
 - **Slug por organizador ou global?** Decidi global no MVP por simplicidade; revisar se virar dor.
 - **Soft delete de quiz/campanha?** Não decidido; provavelmente delete real no MVP, com confirmação dupla quando há respostas associadas.

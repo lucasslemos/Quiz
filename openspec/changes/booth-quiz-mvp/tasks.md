@@ -1,10 +1,10 @@
 ## 1. Setup do projeto
 
-- [ ] 1.1 Adicionar Tailwind CSS ao projeto Rails 8.1
+- [x] 1.1 Bootstrap 5 já configurado via `cssbundling-rails` (travado pela spec `ui-layout`); nenhuma ação adicional necessária
 - [ ] 1.2 Adicionar gem `rqrcode` ao Gemfile
-- [ ] 1.3 Configurar locale pt-BR como padrão (config.i18n.default_locale = :"pt-BR")
-- [ ] 1.4 Decidir e configurar banco de dados (SQLite ou Postgres) para dev e prod
-- [ ] 1.5 Criar layouts base separados: `application.html.erb` (organizer), `admin.html.erb`, `participant.html.erb` (minimalista)
+- [x] 1.3 Configurar locale pt-BR como padrão (`config.i18n.default_locale = :"pt-BR"`) — já feito em `lock-stack-bootstrap5`
+- [x] 1.4 Banco de dados MySQL (gem `mysql2`) já configurado em todos os ambientes (travado pela spec `project-stack`); nenhuma ação adicional necessária
+- [ ] 1.5 Criar layouts base separados: `application.html.erb` (organizer, já existente com Bootstrap 5), `admin.html.erb`, `participant.html.erb` (minimalista, usando Bootstrap 5)
 
 ## 2. Modelo de dados — Organizador e Admin
 
