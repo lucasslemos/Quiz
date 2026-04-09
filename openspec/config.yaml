@@ -1,20 +1,46 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+# Contexto do projeto
+# Mostrado à IA ao criar artefatos (propostas, specs, tasks, design).
+context: |
+  Idioma: SEMPRE responder e gerar TODOS os artefatos (propostas, specs, tasks, design, commits, comentários) em Português do Brasil (pt-BR).
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  Stack principal:
+  - Linguagem: Ruby 4.0.1 (respeitar sintaxe e recursos disponíveis nesta versão)
+  - Framework: Rails 8.1.2 (usar convenções e APIs do Rails 8.1; preferir recursos nativos a gems externas)
+  - Banco de dados: MySQL (gem mysql2 ~> 0.5) — considerar particularidades do MySQL em migrations, índices, tipos de coluna, charset/collation (utf8mb4) e limites de chave
+  - Servidor web: Puma
+  - Asset pipeline: Propshaft
+  - Frontend: Hotwire (Turbo + Stimulus), jsbundling-rails, cssbundling-rails
+  - Background jobs / Cache / Cable: Solid Queue, Solid Cache, Solid Cable (stack "Solid" do Rails 8)
+  - Deploy: Kamal + Thruster
+  - Variáveis de ambiente: dotenv-rails (.env em dev/test)
+
+  Convenções do projeto:
+  - Conventional Commits em pt-BR (ex.: "feat:", "fix:", "docs:", "chore:", "refactor:")
+  - Preferir "Rails way" e soluções omakase antes de introduzir novas dependências
+  - Migrations devem ser reversíveis e compatíveis com MySQL
+  - Strong parameters, escopo de queries em models, controllers magros
+  - I18n: chaves em pt-BR; textos voltados ao usuário em config/locales/pt-BR.yml
+
+# Regras por artefato
+rules:
+  proposal:
+    - Escrever em Português do Brasil
+    - Incluir seção "Não-objetivos" (Non-goals) deixando claro o que está fora do escopo
+    - Justificar qualquer nova dependência (gem) — preferir soluções nativas do Rails 8.1
+    - Citar impactos em migrations/MySQL quando houver mudança de schema
+  design:
+    - Escrever em Português do Brasil
+    - Considerar restrições do MySQL (tamanho de índices, utf8mb4, FKs, tipos)
+    - Indicar uso de Solid Queue/Cache/Cable quando aplicável em vez de Redis/Sidekiq
+    - Apontar pontos de I18n (pt-BR) e acessibilidade
+  tasks:
+    - Escrever em Português do Brasil
+    - Quebrar em tarefas pequenas e verificáveis (idealmente < 2h cada)
+    - Incluir tarefas explícitas de testes (Minitest) e de execução de Brakeman/RuboCop quando relevante
+    - Incluir tarefa de migration + rollback quando houver mudança de schema
+  specs:
+    - Escrever em Português do Brasil
+    - Requisitos no formato "DEVE/NÃO DEVE/PODE" (RFC 2119 traduzido)
+    - Cada requisito acompanhado de cenários de aceitação testáveis

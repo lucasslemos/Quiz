@@ -38,5 +38,10 @@ module Quiz
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Localização padrão: Português do Brasil
+    config.i18n.available_locales = [ :"pt-BR", :en ]
+    config.i18n.default_locale = :"pt-BR"
+    config.time_zone = "Brasilia"
   end
 end
