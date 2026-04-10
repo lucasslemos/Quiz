@@ -20,6 +20,10 @@ class Campanha < ApplicationRecord
   def ativar!  = update!(status: "active")
   def encerrar! = update!(status: "closed")
 
+  def ranking
+    participacoes.ranking
+  end
+
   def tem_participacoes?
     participacoes.exists?
   end

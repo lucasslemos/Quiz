@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         resources :participacoes, only: %i[index] do
           collection do
             get :vencedores
+            get :ranking_ao_vivo
           end
         end
       end
@@ -50,9 +51,10 @@ Rails.application.routes.draw do
   # ----------------------------------------------------------------------------
   get  "/c/:slug",            to: "publico/campanhas#show",                as: :publico_campanha
   post "/c/:slug/iniciar",    to: "publico/campanhas#iniciar_participacao", as: :publico_campanha_iniciar
-  get  "/c/:slug/responder",  to: "publico/campanhas#responder",            as: :publico_campanha_responder
-  post "/c/:slug/responder",  to: "publico/campanhas#enviar_respostas",     as: :publico_campanha_enviar
-  get  "/c/:slug/resultado",  to: "publico/campanhas#resultado",            as: :publico_campanha_resultado
+  get  "/c/:slug/responder",           to: "publico/campanhas#responder",           as: :publico_campanha_responder
+  get  "/c/:slug/pergunta/:numero",  to: "publico/campanhas#pergunta",            as: :publico_campanha_pergunta
+  post "/c/:slug/pergunta/:numero",  to: "publico/campanhas#responder_pergunta",  as: :publico_campanha_responder_pergunta
+  get  "/c/:slug/resultado",         to: "publico/campanhas#resultado",           as: :publico_campanha_resultado
 
   # ----------------------------------------------------------------------------
   # Painel do administrador

@@ -9,6 +9,7 @@ class Quiz < ApplicationRecord
   validates :titulo, presence: true
   validates :email_state, inclusion: { in: ESTADOS_IDENTIFICADOR }
   validates :phone_state, inclusion: { in: ESTADOS_IDENTIFICADOR }
+  validates :tempo_por_pergunta, numericality: { only_integer: true, greater_than_or_equal_to: 5, less_than_or_equal_to: 300 }
 
   def identificadores_fracos?
     email_state != "required" && phone_state != "required"

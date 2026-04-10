@@ -1,7 +1,7 @@
 class Resposta < ApplicationRecord
   belongs_to :participacao
   belongs_to :pergunta
-  belongs_to :opcao_resposta
+  belongs_to :opcao_resposta, optional: true
 
   validates :pergunta_id, uniqueness: { scope: :participacao_id }
 

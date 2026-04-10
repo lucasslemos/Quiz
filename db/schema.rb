@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_09_010007) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_10_053731) do
   create_table "administradores", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", null: false
@@ -76,6 +76,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_010007) do
     t.string "nome", null: false
     t.integer "pontuacao", default: 0, null: false
     t.string "telefone"
+    t.integer "tempo_total_ms", default: 0, null: false
     t.string "token_participante", null: false
     t.datetime "updated_at", null: false
     t.boolean "vencedor", default: false, null: false
@@ -100,6 +101,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_010007) do
     t.string "email_state", default: "not_asked", null: false
     t.bigint "organizador_id", null: false
     t.string "phone_state", default: "not_asked", null: false
+    t.integer "tempo_por_pergunta", default: 30, null: false
     t.string "titulo", null: false
     t.datetime "updated_at", null: false
     t.index ["organizador_id"], name: "index_quizzes_on_organizador_id"
@@ -107,9 +109,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_010007) do
 
   create_table "respostas", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "opcao_resposta_id", null: false
+    t.bigint "opcao_resposta_id"
     t.bigint "participacao_id", null: false
     t.bigint "pergunta_id", null: false
+    t.integer "tempo_resposta_ms"
     t.datetime "updated_at", null: false
     t.index ["opcao_resposta_id"], name: "index_respostas_on_opcao_resposta_id"
     t.index ["participacao_id", "pergunta_id"], name: "index_respostas_on_participacao_id_and_pergunta_id", unique: true
