@@ -1,0 +1,16 @@
+<% content_for :title, "Resultado" %>
+
+<% if @participacao.vencedor? %>
+  <div class="alert alert-success">
+    <h1 class="h4">🎉 Parabéns, <%= @participacao.nome %>!</h1>
+    <p class="mb-0">Você acertou todas as perguntas. Procure a equipe do estande para retirar seu prêmio.</p>
+  </div>
+<% else %>
+  <div class="alert alert-info">
+    <h1 class="h4">Obrigado por participar, <%= @participacao.nome %>!</h1>
+    <p class="mb-0">
+      Você acertou <strong><%= @participacao.pontuacao %></strong> de
+      <strong><%= @quiz.perguntas.count %></strong> perguntas.
+    </p>
+  </div>
+<% end %>

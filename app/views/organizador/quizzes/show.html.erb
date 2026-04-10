@@ -1,0 +1,94 @@
+<% content_for :title, @quiz.titulo %>
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+  <div>
+    <h1 class="h3 mb-1"><%= @quiz.titulo %></h1>
+    <p class="text-muted small mb-0">
+      <%= pluralize(@quiz.perguntas.size, "pergunta") %> ·
+      <%= pluralize(@quiz.campos_personalizados.size, "campo personalizado") %>
+    </p>
+  </div>
+  <div class="d-flex gap-2">
+    <%= link_to "Campanhas", organizador_quiz_campanhas_path(@quiz), class: "btn btn-outline-primary" %>
+    <%= link_to "Editar", edit_organizador_quiz_path(@quiz), class: "btn btn-outline-primary" %>
+    <%= button_to "Excluir", organizador_quiz_path(@quiz), method: :delete,
+                  class: "btn btn-outline-danger",
+                  form: { data: { turbo_confirm: "Tem certeza que deseja excluir este quiz?" } } %>
+  </div>
+</div>
+
+<% if @quiz.identificadores_fracos? %>
+  <div class="alert alert-warning">
+    <strong>Atenção:</strong> nem email nem telefone estão como obrigatórios.
+    O sistema só conseguirá bloquear respostas duplicadas por cookie de navegador.
+    Se evitar duplicatas for crítico (ex: prêmio em jogo), torne email ou telefone
+    obrigatório na <%= link_to "edição do quiz", edit_organizador_quiz_path(@quiz), class: "alert-link" %>.
+  </div>
+<% end %>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h2 class="h5 mb-0">Perguntas</h2>
+          <%= link_to "Nova pergunta", new_organizador_quiz_pergunta_path(@quiz), class: "btn btn-sm btn-primary" %>
+        </div>
+        <% if @quiz.perguntas.any? %>
+          <ol class="list-group list-group-numbered">
+            <% @quiz.perguntas.each do |pergunta| %>
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div><%= pergunta.texto %></div>
+                  <small class="text-muted">
+                    <%= pluralize(pergunta.opcoes_resposta.size, "opção", plural: "opções") %>
+                  </small>
+                </div>
+                <div class="d-flex gap-1">
+                  <%= link_to "Editar", edit_organizador_quiz_pergunta_path(@quiz, pergunta), class: "btn btn-sm btn-outline-secondary" %>
+                  <%= button_to "Remover", organizador_quiz_pergunta_path(@quiz, pergunta), method: :delete,
+                                class: "btn btn-sm btn-outline-danger",
+                                form: { data: { turbo_confirm: "Remover esta pergunta?" } } %>
+                </div>
+              </li>
+            <% end %>
+          </ol>
+        <% else %>
+          <p class="text-muted small mb-0">Nenhuma pergunta ainda.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h2 class="h5 mb-0">Campos personalizados</h2>
+          <%= link_to "Novo campo", new_organizador_quiz_campo_personalizado_path(@quiz), class: "btn btn-sm btn-primary" %>
+        </div>
+        <% if @quiz.campos_personalizados.any? %>
+          <ul class="list-group">
+            <% @quiz.campos_personalizados.each do |campo| %>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <strong><%= campo.rotulo %></strong>
+                  <small class="text-muted d-block">
+                    <%= campo.tipo_campo %><%= " · obrigatório" if campo.obrigatorio %>
+                  </small>
+                </div>
+                <div class="d-flex gap-1">
+                  <%= link_to "Editar", edit_organizador_quiz_campo_personalizado_path(@quiz, campo), class: "btn btn-sm btn-outline-secondary" %>
+                  <%= button_to "Remover", organizador_quiz_campo_personalizado_path(@quiz, campo), method: :delete,
+                                class: "btn btn-sm btn-outline-danger",
+                                form: { data: { turbo_confirm: "Remover este campo?" } } %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted small mb-0">Nenhum campo personalizado.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

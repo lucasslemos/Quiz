@@ -1,0 +1,61 @@
+<%= form_with model: [:organizador, @quiz, pergunta], local: true do |f| %>
+  <% if pergunta.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% pergunta.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :texto, "Pergunta", class: "form-label" %>
+    <%= f.text_area :texto, class: "form-control", rows: 2, required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :posicao, "Posição", class: "form-label" %>
+    <%= f.number_field :posicao, class: "form-control", min: 0 %>
+  </div>
+
+  <fieldset class="mb-3">
+    <legend class="h6">Opções de resposta</legend>
+    <p class="text-muted small">
+      Marque exatamente uma opção como correta. Mínimo de duas opções.
+    </p>
+
+    <%= f.fields_for :opcoes_resposta do |opt| %>
+      <div class="card mb-2">
+        <div class="card-body">
+          <%= opt.hidden_field :id %>
+          <div class="row g-2 align-items-center">
+            <div class="col-md-7">
+              <%= opt.label :texto, "Texto", class: "form-label" %>
+              <%= opt.text_field :texto, class: "form-control" %>
+            </div>
+            <div class="col-md-2">
+              <%= opt.label :posicao, "Pos.", class: "form-label" %>
+              <%= opt.number_field :posicao, class: "form-control", min: 0 %>
+            </div>
+            <div class="col-md-2 form-check mt-3">
+              <%= opt.check_box :correta, class: "form-check-input" %>
+              <%= opt.label :correta, "Correta", class: "form-check-label" %>
+            </div>
+            <div class="col-md-1 mt-3">
+              <% unless opt.object.new_record? %>
+                <%= opt.check_box :_destroy, class: "form-check-input" %>
+                <%= opt.label :_destroy, "Remover", class: "form-check-label small" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <div class="d-flex gap-2">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancelar", organizador_quiz_path(@quiz), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

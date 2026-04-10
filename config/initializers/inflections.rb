@@ -35,6 +35,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   # ----------------------------------------------------------------------------
   # Irregulares conhecidos do domínio Quiz
   # ----------------------------------------------------------------------------
+  inflect.irregular("quiz",                      "quizzes")
   inflect.irregular("organizador",               "organizadores")
   inflect.irregular("administrador",             "administradores")
   inflect.irregular("pergunta",                  "perguntas")

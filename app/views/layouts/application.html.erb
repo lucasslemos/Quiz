@@ -27,11 +27,39 @@
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="/">Quiz</a>
+        <% if defined?(current_organizador) && current_organizador&.aprovado? %>
+          <%= link_to "Quiz", organizador_root_path, class: "navbar-brand fw-bold" %>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#orgNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="orgNav">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <%= link_to "Painel", organizador_root_path,
+                      class: "nav-link #{'active' if controller_name == 'painel'}" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Meus quizzes", organizador_quizzes_path,
+                      class: "nav-link #{'active' if controller_name == 'quizzes' || controller_name == 'perguntas' || controller_name == 'campos_personalizados'}" %>
+              </li>
+            </ul>
+            <span class="navbar-text me-3 small text-muted"><%= current_organizador.email %></span>
+            <%= button_to "Sair", sair_path, method: :delete, class: "btn btn-sm btn-outline-secondary" %>
+          </div>
+        <% else %>
+          <%= link_to "Quiz", root_path, class: "navbar-brand fw-bold" %>
+          <div class="ms-auto d-flex gap-2">
+            <%= link_to "Entrar", entrar_path, class: "btn btn-sm btn-outline-primary" %>
+            <%= link_to "Cadastro", cadastro_path, class: "btn btn-sm btn-primary" %>
+          </div>
+        <% end %>
       </div>
     </nav>
 
     <main class="container py-4">
+      <% flash.each do |type, message| %>
+        <div class="alert alert-<%= type == "notice" ? "success" : "warning" %>"><%= message %></div>
+      <% end %>
       <%= yield %>
     </main>
   </body>

@@ -1,0 +1,22 @@
+<% content_for :title, @campanha.nome %>
+
+<h1 class="h4 mb-3"><%= @campanha.nome %></h1>
+<p class="text-muted">Olá, <%= @participacao.nome %>! Responda todas as perguntas.</p>
+
+<%= form_with url: publico_campanha_enviar_path(@campanha.slug), method: :post, local: true do |f| %>
+  <% @perguntas.each_with_index do |pergunta, i| %>
+    <fieldset class="mb-4">
+      <legend class="h6"><%= i + 1 %>. <%= pergunta.texto %></legend>
+      <% pergunta.opcoes_resposta.each do |opcao| %>
+        <div class="form-check">
+          <%= radio_button_tag "respostas[#{pergunta.id}]", opcao.id, false,
+                class: "form-check-input", required: true,
+                id: "p#{pergunta.id}_o#{opcao.id}" %>
+          <%= label_tag "p#{pergunta.id}_o#{opcao.id}", opcao.texto, class: "form-check-label" %>
+        </div>
+      <% end %>
+    </fieldset>
+  <% end %>
+
+  <%= f.submit "Enviar respostas", class: "btn btn-primary w-100" %>
+<% end %>

@@ -1,6 +1,8 @@
 class Organizador < ApplicationRecord
   has_secure_password
 
+  has_many :quizzes, dependent: :destroy
+
   STATUSES = %w[pending approved rejected suspended].freeze
 
   validates :email,

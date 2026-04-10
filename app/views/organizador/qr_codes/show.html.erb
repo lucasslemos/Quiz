@@ -1,0 +1,16 @@
+<% content_for :title, "QR code — #{@campanha.nome}" %>
+
+<h1 class="h3 mb-4">QR code da campanha</h1>
+
+<div class="card">
+  <div class="card-body text-center">
+    <div class="mb-3">
+      <%= raw GeradorQrCode.svg_para(@url_publica, modulo: 8) %>
+    </div>
+    <p class="mb-1">URL pública:</p>
+    <p><code><%= @url_publica %></code></p>
+    <%= link_to "Baixar PNG imprimível",
+          organizador_quiz_campanha_qr_code_path(@quiz, @campanha, format: :png),
+          class: "btn btn-primary" %>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<%= form_with model: [:organizador, @quiz, campanha], local: true do |f| %>
+  <% if campanha.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% campanha.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :nome, class: "form-label" %>
+    <%= f.text_field :nome, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :slug, "Slug (URL pública)", class: "form-label" %>
+    <% if campanha.persisted? && campanha.tem_participacoes? %>
+      <input type="text" class="form-control" value="<%= campanha.slug %>" disabled>
+      <small class="text-muted">Slug não pode ser editado depois da primeira participação.</small>
+    <% else %>
+      <%= f.text_field :slug, class: "form-control", placeholder: "deixe em branco para gerar automaticamente" %>
+      <small class="text-muted">Apenas letras minúsculas, números e hífens.</small>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= f.label :inicio_em, "Início (opcional)", class: "form-label" %>
+      <%= f.datetime_local_field :inicio_em, class: "form-control" %>
+    </div>
+    <div class="col-md-6 mb-3">
+      <%= f.label :fim_em, "Fim (opcional)", class: "form-label" %>
+      <%= f.datetime_local_field :fim_em, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancelar", organizador_quiz_path(@quiz), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

@@ -25,6 +25,9 @@ gem "bcrypt", "~> 3.1.7"
 # Geração de QR codes (PNG/SVG) para campanhas
 gem "rqrcode", "~> 2.2"
 
+# CSV saiu das default gems no Ruby 3.4+ — exportação de campanhas depende dela
+gem "csv"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

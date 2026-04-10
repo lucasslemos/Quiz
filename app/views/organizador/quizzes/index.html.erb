@@ -1,0 +1,29 @@
+<% content_for :title, "Meus quizzes" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Meus quizzes</h1>
+  <%= link_to "Novo quiz", new_organizador_quiz_path, class: "btn btn-primary" %>
+</div>
+
+<% if @quizzes.any? %>
+  <div class="list-group">
+    <% @quizzes.each do |quiz| %>
+      <%= link_to organizador_quiz_path(quiz), class: "list-group-item list-group-item-action" do %>
+        <div class="d-flex w-100 justify-content-between">
+          <h2 class="h5 mb-1"><%= quiz.titulo %></h2>
+          <small class="text-muted"><%= l(quiz.created_at.to_date) rescue quiz.created_at.to_date %></small>
+        </div>
+        <small class="text-muted">
+          <%= pluralize(quiz.perguntas.size, "pergunta") %>
+        </small>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="card">
+    <div class="card-body text-center text-muted py-5">
+      <p class="mb-3">Você ainda não criou nenhum quiz.</p>
+      <%= link_to "Criar primeiro quiz", new_organizador_quiz_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

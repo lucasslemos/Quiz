@@ -1,0 +1,40 @@
+<% content_for :title, @campanha.nome %>
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+  <div>
+    <h1 class="h3 mb-1"><%= @campanha.nome %></h1>
+    <p class="text-muted small mb-0">
+      Quiz: <%= link_to @quiz.titulo, organizador_quiz_path(@quiz) %> ·
+      Status: <span class="badge bg-secondary"><%= @campanha.status %></span>
+    </p>
+  </div>
+  <div class="d-flex gap-2 flex-wrap">
+    <%= link_to "QR code", organizador_quiz_campanha_qr_code_path(@quiz, @campanha), class: "btn btn-outline-primary" %>
+    <%= link_to "Participações", organizador_quiz_campanha_participacoes_path(@quiz, @campanha), class: "btn btn-outline-primary" %>
+    <%= link_to "Vencedores", vencedores_organizador_quiz_campanha_participacoes_path(@quiz, @campanha), class: "btn btn-outline-primary" %>
+    <%= link_to "CSV", organizador_quiz_campanha_path(@quiz, @campanha, format: :csv), class: "btn btn-outline-success" %>
+    <%= link_to "Editar", edit_organizador_quiz_campanha_path(@quiz, @campanha), class: "btn btn-outline-secondary" %>
+    <% if @campanha.draft? %>
+      <%= button_to "Ativar", ativar_organizador_quiz_campanha_path(@quiz, @campanha), method: :post, class: "btn btn-success" %>
+    <% elsif @campanha.active? %>
+      <%= button_to "Encerrar", encerrar_organizador_quiz_campanha_path(@quiz, @campanha), method: :post, class: "btn btn-warning" %>
+    <% end %>
+  </div>
+</div>
+
+<% if @quiz.identificadores_fracos? %>
+  <div class="alert alert-warning">
+    <strong>Atenção:</strong> o quiz desta campanha não tem identificadores obrigatórios.
+    Bloqueio anti-duplicata será só por cookie.
+  </div>
+<% end %>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h2 class="h6">URL pública</h2>
+    <code>/c/<%= @campanha.slug %></code>
+    <% if @campanha.tem_participacoes? %>
+      <p class="text-muted small mb-0 mt-2">Slug travado (já tem participações).</p>
+    <% end %>
+  </div>
+</div>

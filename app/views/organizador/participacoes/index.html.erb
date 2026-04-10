@@ -1,0 +1,58 @@
+<% content_for :title, "Participações — #{@campanha.nome}" %>
+
+<h1 class="h3 mb-4">
+  <%= action_name == "vencedores" ? "Vencedores" : "Participações" %> — <%= @campanha.nome %>
+</h1>
+
+<div class="mb-3 d-flex gap-2">
+  <%= link_to "Todas",     organizador_quiz_campanha_participacoes_path(@quiz, @campanha),
+        class: "btn btn-sm #{action_name == 'index' ? 'btn-primary' : 'btn-outline-primary'}" %>
+  <%= link_to "Vencedores", vencedores_organizador_quiz_campanha_participacoes_path(@quiz, @campanha),
+        class: "btn btn-sm #{action_name == 'vencedores' ? 'btn-primary' : 'btn-outline-primary'}" %>
+  <%= link_to "Exportar CSV", organizador_quiz_campanha_path(@quiz, @campanha, format: :csv),
+        class: "btn btn-sm btn-outline-success ms-auto" %>
+</div>
+
+<% if @participacoes.any? %>
+  <div class="table-responsive">
+    <table class="table table-sm table-striped">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <% @campos.each do |c| %>
+            <th><%= c.rotulo %></th>
+          <% end %>
+          <th>Pontuação</th>
+          <th>Vencedor?</th>
+          <th>Enviado em</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @participacoes.each do |p| %>
+          <% valores_por_campo = p.valores_campo_personalizado.index_by(&:campo_personalizado_id) %>
+          <tr>
+            <td><%= p.nome %></td>
+            <td><%= p.email %></td>
+            <td><%= p.telefone %></td>
+            <% @campos.each do |c| %>
+              <td><%= valores_por_campo[c.id]&.valor %></td>
+            <% end %>
+            <td><%= p.pontuacao %></td>
+            <td><%= p.vencedor? ? "Sim" : "Não" %></td>
+            <td><%= p.enviado_em&.strftime("%d/%m/%Y %H:%M") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="card">
+    <div class="card-body text-center text-muted py-5">
+      <p class="mb-0">
+        <%= action_name == "vencedores" ? "Nenhum vencedor ainda." : "Nenhuma participação ainda." %>
+      </p>
+    </div>
+  </div>
+<% end %>

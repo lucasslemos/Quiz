@@ -1,0 +1,46 @@
+<%= form_with model: [:organizador, @quiz, campo], local: true do |f| %>
+  <% if campo.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% campo.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :rotulo, "Rótulo", class: "form-label" %>
+    <%= f.text_field :rotulo, class: "form-control", required: true %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= f.label :tipo_campo, "Tipo", class: "form-label" %>
+      <%= f.select :tipo_campo,
+            CampoPersonalizado::TIPOS.map { |t| [t.capitalize, t] },
+            {}, class: "form-select" %>
+    </div>
+    <div class="col-md-3 mb-3">
+      <%= f.label :posicao, "Posição", class: "form-label" %>
+      <%= f.number_field :posicao, class: "form-control", min: 0 %>
+    </div>
+    <div class="col-md-3 mb-3 form-check mt-4">
+      <%= f.check_box :obrigatorio, class: "form-check-input" %>
+      <%= f.label :obrigatorio, "Obrigatório", class: "form-check-label" %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :opcoes_texto, "Opções (apenas para tipo select — uma por linha)", class: "form-label" %>
+    <%= f.text_area :opcoes_texto,
+          value: (campo.opcoes.is_a?(Array) ? campo.opcoes.join("\n") : nil),
+          class: "form-control", rows: 4,
+          placeholder: "Opção 1\nOpção 2\nOpção 3" %>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancelar", organizador_quiz_path(@quiz), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

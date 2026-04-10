@@ -26,7 +26,33 @@ Rails.application.routes.draw do
   # ----------------------------------------------------------------------------
   namespace :organizador do
     get "/", to: "painel#show", as: :root
+
+    resources :quizzes do
+      resources :perguntas, except: %i[index show]
+      resources :campos_personalizados, except: %i[index show]
+      resources :campanhas do
+        member do
+          post :ativar
+          post :encerrar
+        end
+        resource :qr_code, only: %i[show]
+        resources :participacoes, only: %i[index] do
+          collection do
+            get :vencedores
+          end
+        end
+      end
+    end
   end
+
+  # ----------------------------------------------------------------------------
+  # Área pública (participante)
+  # ----------------------------------------------------------------------------
+  get  "/c/:slug",            to: "publico/campanhas#show",                as: :publico_campanha
+  post "/c/:slug/iniciar",    to: "publico/campanhas#iniciar_participacao", as: :publico_campanha_iniciar
+  get  "/c/:slug/responder",  to: "publico/campanhas#responder",            as: :publico_campanha_responder
+  post "/c/:slug/responder",  to: "publico/campanhas#enviar_respostas",     as: :publico_campanha_enviar
+  get  "/c/:slug/resultado",  to: "publico/campanhas#resultado",            as: :publico_campanha_resultado
 
   # ----------------------------------------------------------------------------
   # Painel do administrador

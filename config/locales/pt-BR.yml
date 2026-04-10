@@ -10,3 +10,21 @@ pt-BR:
       default: "%d/%m/%Y %H:%M"
       short: "%d/%m %H:%M"
       long: "%d de %B de %Y, %H:%M"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      required: "é obrigatório"
+      blank: "não pode ficar em branco"
+      taken: "já está em uso"
+      invalid: "é inválido"
+      too_short: "é muito curto (mínimo de %{count} caracteres)"
+      too_long: "é muito longo (máximo de %{count} caracteres)"
+      inclusion: "não está incluído na lista"
+      confirmation: "não é igual a %{attribute}"
+  activerecord:
+    errors:
+      messages:
+        required: "é obrigatório"
+        blank: "não pode ficar em branco"
+        taken: "já está em uso"
+        invalid: "é inválido"

@@ -1,0 +1,22 @@
+<% content_for :title, "Campanhas — #{@quiz.titulo}" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Campanhas — <%= @quiz.titulo %></h1>
+  <%= link_to "Nova campanha", new_organizador_quiz_campanha_path(@quiz), class: "btn btn-primary" %>
+</div>
+
+<% if @campanhas.any? %>
+  <div class="list-group">
+    <% @campanhas.each do |campanha| %>
+      <%= link_to organizador_quiz_campanha_path(@quiz, campanha), class: "list-group-item list-group-item-action" do %>
+        <div class="d-flex justify-content-between">
+          <strong><%= campanha.nome %></strong>
+          <span class="badge bg-secondary"><%= campanha.status %></span>
+        </div>
+        <small class="text-muted">/c/<%= campanha.slug %></small>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-muted">Nenhuma campanha criada para este quiz.</p>
+<% end %>

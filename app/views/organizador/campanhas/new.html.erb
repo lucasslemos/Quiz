@@ -1,0 +1,12 @@
+<% content_for :title, "Nova campanha" %>
+
+<h1 class="h3 mb-4">Nova campanha — <%= @quiz.titulo %></h1>
+
+<% if @quiz.identificadores_fracos? %>
+  <div class="alert alert-warning">
+    <strong>Atenção:</strong> este quiz não tem email nem telefone como obrigatórios.
+    Respostas duplicadas só poderão ser bloqueadas por cookie de navegador.
+  </div>
+<% end %>
+
+<%= render "form", campanha: @campanha %>

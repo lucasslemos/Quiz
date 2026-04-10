@@ -15,3 +15,21 @@ admin.password = admin_senha
 admin.save!
 
 puts "Administrador disponível: #{admin.email}"
+
+# ------------------------------------------------------------------------------
+# Organizador de desenvolvimento (apenas em dev/test)
+# ------------------------------------------------------------------------------
+# Em produção não criamos nenhum organizador automaticamente — eles se cadastram
+# pelo /cadastro e o admin aprova. Em dev é prático ter um já aprovado para
+# poder validar o fluxo do organizador sem precisar logar no /admin antes.
+if Rails.env.local?
+  organizador_email = ENV.fetch("ORGANIZADOR_DEV_EMAIL", "organizador@quiz.local")
+  organizador_senha = ENV.fetch("ORGANIZADOR_DEV_PASSWORD", "organizador12345")
+
+  organizador = Organizador.find_or_initialize_by(email: organizador_email)
+  organizador.password = organizador_senha
+  organizador.status = "approved"
+  organizador.save!
+
+  puts "Organizador de dev disponível (já aprovado): #{organizador.email} / #{organizador_senha}"
+end
